@@ -4,7 +4,7 @@ You will be using the auction CorDapp developed by Ashutosh Meher, an R3 develop
 
 You can read more about the auction CorDapp in [this blog post](https://www.corda.net/blog/creating-a-sample-auction-house-cordapp-from-scratch-part1/).
 
-## Before the workshop
+## Before the bootcamp
 
 1. Join the Corda network as described in the email that you should have received.
 1. Download the auction CorDapp workflow and contract JAR files from the [release tab](https://github.com/akegaviar/auction-cordapp/releases/tag/1.0).
