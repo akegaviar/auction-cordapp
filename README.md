@@ -1,135 +1,61 @@
-# auction cordapp [<img src="../../webIDE.png" height=25 />](https://ide.corda.net/?folder=/home/coder/samples-java/Advanced/auction-cordapp)
+# Blockchain Bootcamp: Using Corda on Chainstack for Decentralized Governance
 
-This CorDapp serves as a demo of building an auction application on Corda. It leverages
-different features of Corda like [SchedulableState](https://docs.corda.net/docs/corda-os/event-scheduling.html#how-to-implement-scheduled-events), [StatePointer](https://docs.corda.net/docs/corda-os/api-states.html#state-pointers) and [OwnableState](https://docs.corda.net/docs/corda-os/api-states.html#ownablestate). It also demonstrate
-how to perform a DvP (Delivery vs Payment) transaction on Corda.
+You will be using the auction CorDapp developed by Ashutosh Meher, an R3 developer advocate.
 
-It has a full-functional client included and an angular UI to interact with the nodes.
+You can read more about the auction CorDapp in [this blog post](https://www.corda.net/blog/creating-a-sample-auction-house-cordapp-from-scratch-part1/).
 
-## Concepts
+## Before the workshop
 
-### States
+1. Join the Corda network as described in the email that you should have received.
+1. Download the auction CorDapp workflow and contract JAR files from the [release tab](https://github.com/akegaviar/auction-cordapp/releases/tag/1.0).
+1. Install the workflow and contract one after the other on your Corda node. For instructions, see [Installing a CorDapp](https://docs.chainstack.com/operations/corda/installing-a-cordapp)
+1. Connect to your node as described in [Corda tools](https://docs.chainstack.com/operations/corda/tools). Note that you will need to have either Java 8 installed or Docker as described in the documentation. For the Java version, see [Corda standalone shell](https://docs.chainstack.com/operations/corda/tools#corda-standalone-shell); for the Docker version, see [Chainstack standalone shell](https://docs.chainstack.com/operations/corda/tools#chainstack-standalone-shell).
 
-- `Asset`: It is an `OwnableState` that represents an asset that could be put on auction. The owner
-of the asset should be able to put this asset on an auction.
+At this point, you are ready for the bootcamp.
 
-- `AuctionState`: It represents the auction. It is designed as a `SchedulableState`, such that auction
-could be scheduled to be made inactive, once the auction deadline is reached.
+## During the bootcamp
 
-### Contracts:
+During the bootcamp, you will be issued 100 USD to bid on one of the action items.
 
-- `AssetContract`: It is used to govern the evolution of the asset. In this case mostly change of
-ownership. Left black for simplicity. Has two commands, `CreateAsset` and `TransferAsset`.
+Here are the commands that you will need:
 
-- `AuctionContract`: It governs the evolution of the auction. The has the following commands:
+Checking that you've been issued the cash:
 
-  - `CreateAuction`: Validation rules governing the creation of the auction.
-
-  - `Bid`: Validation rules governing the bidding process of the auction.
-
-  - `EndAuction`: Validation rules governing end of the auction i.e making the auction inactive
-    once the auction bidding deadline has been reached.
-
-  - `Settlement`: Validation rules for settlement of the auction i.e. transfer of asset to the
-    highest bidder and the highest bid amount transfer to the auctioneer.
-
-  - `Exit`: Rules governing the exit (consumption/deletion) of the auction state.
-
-### Flows:
-
-- `CreateAssetFlow`: This flow is used create an asset. Implemented in [CreateAssetFlow.java](./workflows/src/main/java/net/corda/samples/flows/CreateAssetFlow.java#L44-L66)
-
-- `CreateAuctionFlow`: This flow is used to create an auction ([CreateAuctionFlow.java can be found here](./workflows/src/main/java/net/corda/samples/flows/CreateAuctionFlow.java#L58-L96)). Once an asset has been created using
-the`CreateAssetFlow`, this flow can be used to put the asset on auction. The `AuctionState`
-references to the `Asset` using a `StatePointer`.
-
-Refer here to learn more about StatePointer: https://medium.com/corda/linking-corda-states-using-statepointer-16e24e5e602
-
-- `BidFlow`: It is used to place a bid on an auction. Bids can be placed only till a predetermined
-deadline defined in the `AuctionState`. Implemented in [BidFlow.java](./workflows/src/main/java/net/corda/samples/flows/BidFlow.java#L42-L86).
-
-- `EndAuctionFlow`: This is a scheduled flow, which run automatically on auction deadline to mark
-the corresponding auction as inactive, so that it stop receiving bids.The auction flow can be found [here](./workflows/src/main/java/net/corda/samples/flows/EndAuctionFlow.java#L39-L83)
-
-- `AuctionSettlementFlow`: It is used to settle an auction once the bidding deadline has passed. It internally triggers two flows:
-
-  - `AuctionDvPFlow`: This flow takes care of the dvp operation for settlement of the auction. It
-    transfers the asset on auction to the highest bidder and the highest bid amount is transferred to
-    the auctioneer. It happens as an atomic transaction.
-
-  - `AuctionExitFlow`: Once the auction us settled, this flow is used to exit the auction state. This
-    flow can also be triggered to  exit an auction which did not receive any bid till its deadline.
-
-
-
-## Usage
-
-### Pre-requisites:
-
-See https://docs.corda.net/getting-set-up.html.
-
-### Running the nodes:
-Open a terminal and go to the project root directory and type: (to deploy the nodes using bootstrapper)
 ```
-./gradlew clean deployNodes
-```
-Then type: (to run the nodes)
-```
-./build/nodes/runnodes
+run vaultQuery contractStateType: net.corda.finance.contracts.asset.Cash$State
 ```
 
-### Running the client:
+Bidding:
 
-The client can be run by executing the below command from the project root:
+```
+start BidFlow bidAmount: AMOUNT, auctionId: LINEARID
+```
 
-`./gradlew runAuctionClient`
+where
 
-Please make sure that the nodes are already running before starting the client.
-The client can be accessed at http://localhost:8085/
+AMOUNT — the amount you want to bid on an auction item.
+LINEARID — the ID of the action item.
 
-### Running our Demo
+Example:
 
-1. Click on the "Setup Demo Data" button to create somde demo data to play with or you
-may use the skip button if you wish to setup the deata yourself.
-![Setup Data](./snaps/setup.png)
+```
+start BidFlow bidAmount: 20 USD, auctionId: 774bb8fb-8769-490d-9c88-9687f978d5e3
+```
 
-2. The demo data setup would have created some assets from each of the parties. The assets
-can be found under MyAssets Section. These assets could be put on auction. New assets can
-be create using the create asset button.
-The drop down at the top right corner can be used to toggle between parties.
-The balance next to it indicates the current active parties cash balance. Cash can be
-issued using the Issue Cash Button.
-![Landing Page](./snaps/landing.png)
+Checking the existing auction assets:
 
-3. Click on an asset to put it on auction. Input the `Base Price` and the `Auction Deadline`
-and click in the Create Auction button to Create the Auction.
-![Create Auction](./snaps/CreateAuction.png)
+```
+run vaultQuery contractStateType: net.corda.samples.states.Asset
+```
 
-4. Once an auction is created it would be available in the `Active Auction` section. Its
-now ready to accept bids. Switch to PartyB and place a bid, by clicking on the auction
-available in the `Active Auction` section.
-![Place Bid](./snaps/Bid.png)
+Checking the existing auction items and item IDs:
 
-5. Place one more bid by switching to PartyC.
+```
+run vaultQuery contractStateType: net.corda.samples.states.AuctionState
+```
 
-6. What for the auction to end.
+Look for the `linearId` field in the response.
 
-7. Once the auction is ended its ready to be settled. Settlement can be initiated by the
-highest bidder. Considering PartyC is the highest bidder, switch to PartyC.
+## Additional information
 
-8. Issue cash equivalent or greater than the highest bid amount for PartyC to pay for
-    the auction settlement.
-![Issue Cash](./snaps/CashIssue.png)
-
-9. Now click on the auction and initiate the settlement using the `Pay and Settle` Button.
-![Pay and Settle](./snaps/Settle.png)
-
-
-Notice the below things that would happed on auction settlement:
-
-- Auctioned Assets ownership would be transferred to the highest bidder. The asset would
-now appear in the auction winners asset list (My Assets section).
-- The auctioneers cash balance would be credited with amount equivalent to the highest bid.
-- The highest bidders (PartyC in this case) cash balance would also be debited with amount
-equivalent to the highest bid.
-- The AuctionState would be consumed and the auction would no longer be visible.
+If you have any difficulties or have questions, [talk to us on Gitter](https://gitter.im/chainstack/Lobby).
