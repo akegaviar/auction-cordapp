@@ -8,7 +8,11 @@ You can read more about the auction CorDapp in [this blog post](https://www.cord
 
 1. Join the Corda network as described in the email that you should have received.
 1. Download the auction CorDapp workflow and contract JAR files from the [release tab](https://github.com/akegaviar/auction-cordapp/releases/tag/1.0).
+1. Download the Corda finance CorDapp workflow and contract from Corda artifactory:
+	* [Corda finance contract](https://software.r3.com/artifactory/corda-releases/net/corda/corda-finance-contracts/4.5-RC05/corda-finance-contracts-4.5-RC05.jar)
+	* [Corda finance workflow](https://software.r3.com/artifactory/corda-releases/net/corda/corda-finance-workflows/4.5-RC05/corda-finance-workflows-4.5-RC05.jar)
 1. Install the workflow and contract one after the other on your Corda node. For instructions, see [Installing a CorDapp](https://docs.chainstack.com/operations/corda/installing-a-cordapp)
+1. Install Corda finance workflow first on your node. Then install Corda finance contract on your node. It's important that you install the workflow first and only then the contract. Otherwise the installation will not work.
 1. Connect to your node as described in [Corda tools](https://docs.chainstack.com/operations/corda/tools). Note that you will need to have either Java 8 installed or Docker as described in the documentation. For the Java version, see [Corda standalone shell](https://docs.chainstack.com/operations/corda/tools#corda-standalone-shell); for the Docker version, see [Chainstack standalone shell](https://docs.chainstack.com/operations/corda/tools#chainstack-standalone-shell).
 
 At this point, you are ready for the bootcamp.
