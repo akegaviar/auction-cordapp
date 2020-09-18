@@ -56,13 +56,13 @@ run vaultQuery contractStateType: net.corda.finance.contracts.asset.Cash$State
 ## Bidding
 
 ```
-start BidFlow bidAmount: AMOUNT, auctionId: LINEARID
+start BidFlow bidAmount: AMOUNT, auctionId: ID
 ```
 
 where
 
 * AMOUNT — the amount you want to bid on an auction item.
-* LINEARID — the ID of the action item.
+* ID — the ID of the auction ID. Can be queried with `run vaultQuery contractStateType: net.corda.samples.states.AuctionState`.
 
 Example:
 
@@ -75,6 +75,7 @@ start BidFlow bidAmount: 20 USD, auctionId: 774bb8fb-8769-490d-9c88-9687f978d5e3
 ```
 run vaultQuery contractStateType: net.corda.samples.states.Asset
 ```
+Look for the `linearId` field in the response.
 
 ## Checking the existing auction items and item IDs
 
@@ -82,7 +83,7 @@ run vaultQuery contractStateType: net.corda.samples.states.Asset
 run vaultQuery contractStateType: net.corda.samples.states.AuctionState
 ```
 
-Look for the `linearId` field in the response.
+Look for the `auctionId` field in the response.
 
 ## Running the node explorer
 
