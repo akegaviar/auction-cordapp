@@ -16,6 +16,29 @@ You can read more about the auction CorDapp in [this blog post](https://www.cord
 1. Install Corda finance workflow first on your node. Then install Corda finance contract on your node. It's important that you install the workflow first and only then the contract. Otherwise the installation will not work.
 1. Connect to your node as described in [Corda tools](https://docs.chainstack.com/operations/corda/tools). Note that you will need to have either Java 8 installed or Docker as described in the documentation. For the Java version, see [Corda standalone shell](https://docs.chainstack.com/operations/corda/tools#corda-standalone-shell); for the Docker version, see [Chainstack standalone shell](https://docs.chainstack.com/operations/corda/tools#chainstack-standalone-shell).
 
+To ensure you did everything correctly, once connected to your node, run the `flow list` command. The output should show you all the CorDapps installed.
+
+Example:
+
+```
+Fri Sep 18 00:35:14 GMT 2020>>> flow list
+net.corda.core.flows.ContractUpgradeFlow$Authorise
+net.corda.core.flows.ContractUpgradeFlow$Deauthorise
+net.corda.core.flows.ContractUpgradeFlow$Initiate
+net.corda.finance.flows.CashExitFlow
+net.corda.finance.flows.CashIssueAndPaymentFlow
+net.corda.finance.flows.CashIssueFlow
+net.corda.finance.flows.CashPaymentFlow
+net.corda.finance.internal.CashConfigDataFlow
+net.corda.samples.flows.AuctionDvPFlow$Initiator
+net.corda.samples.flows.AuctionExitFlow$Initiator
+net.corda.samples.flows.AuctionSettlementFlow
+net.corda.samples.flows.BidFlow$Initiator
+net.corda.samples.flows.CreateAssetFlow
+net.corda.samples.flows.CreateAuctionFlow$Initiator
+net.corda.samples.flows.IssueCashFlow
+```
+
 At this point, you are ready for the bootcamp.
 
 ## During the bootcamp
