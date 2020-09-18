@@ -7,7 +7,7 @@ You can read more about the auction CorDapp in [this blog post](https://www.cord
 ## Before the bootcamp
 
 1. Join the Corda network as described in the email that you should have received.
-1. Download the auction CorDapp workflow and contract JAR files from the [release tab](https://github.com/akegaviar/auction-cordapp/releases/tag/1.0).
+1. Download the auction CorDapp workflow and contract JAR files from the [release tab](https://github.com/chainstack/corda-bootcamp-auction-cordap/releases/tag/1.1). Make sure you download version 1.1.
 1. Download the Corda finance CorDapp workflow and contract from Corda artifactory:
 	* [Corda finance contract](https://software.r3.com/artifactory/corda-releases/net/corda/corda-finance-contracts/4.5-RC05/corda-finance-contracts-4.5-RC05.jar)
 	* [Corda finance workflow](https://software.r3.com/artifactory/corda-releases/net/corda/corda-finance-workflows/4.5-RC05/corda-finance-workflows-4.5-RC05.jar)
