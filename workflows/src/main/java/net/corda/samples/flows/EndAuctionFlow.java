@@ -56,7 +56,7 @@ public class EndAuctionFlow {
             if (getOurIdentity().getName().toString().equals(inputState.getAuctioneer().getName().toString())) {
                 // Create the output state, mark tge auction as inactive
                 AuctionState outputState = new AuctionState(inputState.getAuctionItem(), inputState.getAuctionId(),
-                        inputState.getBasePrice(), inputState.getHighestBid(), inputState.getHighestBidder(),
+                        inputState.getBasePrice(), inputState.getHighestBid(), inputState.getTotalBids(), inputState.getHighestBidder(),
                         inputState.getBidEndTime(), inputState.getHighestBid(), false, inputState.getAuctioneer(),
                         inputState.getBidders(), inputState.getHighestBidder());
 

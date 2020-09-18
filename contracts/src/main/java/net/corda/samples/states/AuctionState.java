@@ -23,6 +23,7 @@ public class AuctionState implements SchedulableState {
     private final UUID auctionId;
     private final Amount<Currency> basePrice;
     private final Amount<Currency> highestBid;
+    private final Amount<Currency> totalBids;
     private final Party highestBidder;
     private final Instant bidEndTime;
     private final Amount<Currency> winningBid;
@@ -47,12 +48,13 @@ public class AuctionState implements SchedulableState {
      * @param winner is the party who made the highest bid and won the bidding
      */
     public AuctionState(LinearPointer<LinearState> auctionItem, UUID auctionId, Amount<Currency> basePrice, Amount<Currency> highestBid,
-                        Party highestBidder, Instant bidEndTime, Amount<Currency> winningBid, Boolean active, Party auctioneer,
-                        List<Party> bidders, Party winner) {
+                        Amount<Currency> totalBids, Party highestBidder, Instant bidEndTime, Amount<Currency> winningBid, Boolean active,
+                        Party auctioneer, List<Party> bidders, Party winner) {
         this.auctionItem = auctionItem;
         this.auctionId = auctionId;
         this.basePrice = basePrice;
         this.highestBid = highestBid;
+        this.totalBids = totalBids;
         this.highestBidder = highestBidder;
         this.bidEndTime = bidEndTime;
         this.winningBid = winningBid;
@@ -133,5 +135,9 @@ public class AuctionState implements SchedulableState {
 
     public Boolean getActive() {
         return active;
+    }
+
+    public Amount<Currency> getTotalBids() {
+        return totalBids;
     }
 }

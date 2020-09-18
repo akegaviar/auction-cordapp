@@ -61,9 +61,9 @@ public class AuctionContract implements Contract {
         if(outputState.getHighestBid().getQuantity() < inputState.getBasePrice().getQuantity())
             throw new IllegalArgumentException("Bid Price should be greater than base price");
 
-        if(inputState.getHighestBid() != null &&
-                outputState.getHighestBid().getQuantity() <= inputState.getHighestBid().getQuantity())
-            throw new IllegalArgumentException("Bid Price should be greater than previous highest bid");
+//        if(inputState.getHighestBid() != null &&
+//                outputState.getHighestBid().getQuantity() <= inputState.getHighestBid().getQuantity())
+//            throw new IllegalArgumentException("Bid Price should be greater than previous highest bid");
     }
 
     private void verifyEndAuction(LedgerTransaction tx){

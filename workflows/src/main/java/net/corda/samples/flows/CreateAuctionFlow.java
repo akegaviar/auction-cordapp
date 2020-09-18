@@ -79,7 +79,7 @@ public class CreateAuctionFlow {
             // as a reference state to the transaction and hence we won't spend it.
             AuctionState auctionState = new AuctionState(
                     new LinearPointer<>(new UniqueIdentifier(null, auctionItem), LinearState.class),
-                    UUID.randomUUID(), basePrice, null, null,
+                    UUID.randomUUID(), basePrice, null, Amount.parseCurrency("0 USD"),null,
                     bidDeadLine.atZone(ZoneId.systemDefault()).toInstant(), null, true, auctioneer,
                     bidders, null);
 

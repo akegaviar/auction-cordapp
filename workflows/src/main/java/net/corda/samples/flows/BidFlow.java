@@ -64,9 +64,20 @@ public class BidFlow {
                 throw new FlowException("Insufficient Balance");
             }
 
+            Amount<Currency> highestBid;
+            Party highestBidder;
+            if(input.getHighestBid() == null) {
+                highestBid = bidAmount;
+                highestBidder = getOurIdentity();
+            }
+            else{
+                highestBid = bidAmount.getQuantity()>input.getHighestBid().getQuantity()? bidAmount: input.getHighestBid();
+                highestBidder = bidAmount.getQuantity()>input.getHighestBid().getQuantity()?  getOurIdentity(): input.getHighestBidder();
+            }
+
             //Create the output state
             AuctionState output = new AuctionState(input.getAuctionItem(), input.getAuctionId(), input.getBasePrice(),
-                    bidAmount, getOurIdentity(), input.getBidEndTime(), null, true,
+                    highestBid, input.getTotalBids().plus(bidAmount), highestBidder, input.getBidEndTime(), null, true,
                     input.getAuctioneer(), input.getBidders(), null);
 
             // Build the transaction. On successful completion of the transaction the current auction state is consumed
