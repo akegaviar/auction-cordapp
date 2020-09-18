@@ -86,4 +86,4 @@ Look for the `linearId` field in the response.
 
 ## Additional information
 
-If you have any difficulties or have questions, [talk to us on Gitter](https://gitter.im/chainstack/Lobby).
+If you have any difficulties or have questions, [talk to us on Gitter](https://gitter.im/chainstack/corda-bootcamp).
