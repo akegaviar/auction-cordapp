@@ -47,13 +47,13 @@ During the bootcamp, you will be issued 100 USD to bid on one of the action item
 
 Here are the commands that you will need:
 
-Checking that you've been issued the cash:
+## Checking that you've been issued the cash
 
 ```
 run vaultQuery contractStateType: net.corda.finance.contracts.asset.Cash$State
 ```
 
-Bidding:
+## Bidding
 
 ```
 start BidFlow bidAmount: AMOUNT, auctionId: LINEARID
@@ -61,8 +61,8 @@ start BidFlow bidAmount: AMOUNT, auctionId: LINEARID
 
 where
 
-AMOUNT — the amount you want to bid on an auction item.
-LINEARID — the ID of the action item.
+* AMOUNT — the amount you want to bid on an auction item.
+* LINEARID — the ID of the action item.
 
 Example:
 
@@ -70,19 +70,25 @@ Example:
 start BidFlow bidAmount: 20 USD, auctionId: 774bb8fb-8769-490d-9c88-9687f978d5e3
 ```
 
-Checking the existing auction assets:
+## Checking the existing auction assets
 
 ```
 run vaultQuery contractStateType: net.corda.samples.states.Asset
 ```
 
-Checking the existing auction items and item IDs:
+## Checking the existing auction items and item IDs
 
 ```
 run vaultQuery contractStateType: net.corda.samples.states.AuctionState
 ```
 
 Look for the `linearId` field in the response.
+
+## Running the node explorer
+
+You can also run the node explorer for a visual representation of everything happening on the network. For instructions, see [Node explorer](https://docs.chainstack.com/operations/corda/node-explorer).
+
+In the Node Explorer UI, make sure you provide the path to your `cordapps` directory in **Settings**. Otherwise you won't be able to see the transactions.
 
 ## Additional information
 
