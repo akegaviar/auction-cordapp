@@ -22,15 +22,23 @@ public class IssueCashFlow extends FlowLogic<SignedTransaction> {
 
     private Amount<Currency> amount;
     private Party recipient;
+    private List<Party> recipients;
 
     public IssueCashFlow(Amount<Currency> amount, Party recipient) {
         this.amount = amount;
         this.recipient = recipient;
+        this.recipients = null;
     }
 
     public IssueCashFlow(Amount<Currency> amount) {
         this.amount = amount;
         this.recipient = null;
+        this.recipients = null;
+    }
+    public IssueCashFlow(Amount<Currency> amount, List<Party> recipients) {
+        this.amount = amount;
+        this.recipient = null;
+        this.recipients = recipients;
     }
 
 
@@ -54,13 +62,15 @@ public class IssueCashFlow extends FlowLogic<SignedTransaction> {
         // Issue to all participants
         if(recipient == null){
 
-            List<Party> allParties = getServiceHub().getNetworkMapCache().getAllNodes().stream()
-                    .map(nodeInfo -> nodeInfo.getLegalIdentities().get(0))
-                    .collect(Collectors.toList());
-            allParties.remove(getOurIdentity());
-            allParties.remove(notary);
+            if(this.recipients == null) {
+                recipients = getServiceHub().getNetworkMapCache().getAllNodes().stream()
+                        .map(nodeInfo -> nodeInfo.getLegalIdentities().get(0))
+                        .collect(Collectors.toList());
+                recipients.remove(getOurIdentity());
+                recipients.remove(notary);
+            }
 
-            for(Party thisParty : allParties) {
+            for(Party thisParty : recipients) {
                 subFlow(new CashIssueAndPaymentFlow(amount, OpaqueBytes.of(getOurIdentity().toString().getBytes()), thisParty, false, notary));
                 ledger.getBalanceMap().put(thisParty, amount.getQuantity());
             }

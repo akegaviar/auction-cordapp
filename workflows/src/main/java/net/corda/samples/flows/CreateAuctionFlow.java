@@ -6,6 +6,7 @@ import net.corda.core.contracts.LinearPointer;
 import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.flows.*;
+import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
 import net.corda.core.transactions.SignedTransaction;
 import net.corda.core.transactions.TransactionBuilder;
@@ -35,6 +36,8 @@ public class CreateAuctionFlow {
         private final UUID auctionItem;
         private final LocalDateTime bidDeadLine;
 
+        private List<Party> bidders;
+
         /**
          * Constructor to initialise flow parameters received from rpc.
          *
@@ -46,6 +49,13 @@ public class CreateAuctionFlow {
             this.basePrice = basePrice;
             this.auctionItem = auctionItem;
             this.bidDeadLine = bidDeadLine;
+        }
+
+        public Initiator(Amount<Currency> basePrice, UUID auctionItem, LocalDateTime bidDeadLine, List<Party> bidders) {
+            this.basePrice = basePrice;
+            this.auctionItem = auctionItem;
+            this.bidDeadLine = bidDeadLine;
+            this.bidders = bidders;
         }
 
         @Override
@@ -69,11 +79,13 @@ public class CreateAuctionFlow {
 
             // Fetch all parties from the network map and remove the auctioneer and notary. All the parties are added as
             // participants to the auction state so that its visible to all the parties in the network.
-            List<Party> bidders = getServiceHub().getNetworkMapCache().getAllNodes().stream()
-                    .map(nodeInfo -> nodeInfo.getLegalIdentities().get(0))
-                    .collect(Collectors.toList());
-            bidders.remove(auctioneer);
-            bidders.remove(notary);
+            if(this.bidders == null) {
+                bidders = getServiceHub().getNetworkMapCache().getAllNodes().stream()
+                        .map(nodeInfo -> nodeInfo.getLegalIdentities().get(0))
+                        .collect(Collectors.toList());
+                bidders.remove(auctioneer);
+                bidders.remove(notary);
+            }
 
             // Create the output state. Use a linear pointer to point to the asset on auction. The asset would be added
             // as a reference state to the transaction and hence we won't spend it.
