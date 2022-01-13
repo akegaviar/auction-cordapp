@@ -93,4 +93,4 @@ In the Node Explorer UI, make sure you provide the path to your `cordapps` direc
 
 ## Additional information
 
-If you have any difficulties or have questions, [talk to us on Gitter](https://gitter.im/chainstack/corda-bootcamp).
+If you have any difficulties or have questions, [talk to us on Discord](https://discord.gg/Cymtg2f7pX).
